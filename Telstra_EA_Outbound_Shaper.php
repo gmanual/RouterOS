@@ -1,7 +1,7 @@
 <?php
 	$interfaces = array('ether1');
 	$overhead_percent = '98';
-	$max_limit = '200';
+	$max_limit = '50';
 	$bucket_size = '0.004';
 	$bucket_size_mesc = $bucket_size * 1000;
 	$queue_time_msec = '5';
