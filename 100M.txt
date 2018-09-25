@@ -1,0 +1,58 @@
+/queue type add kind=bfifo name=6M bfifo-limit=29400
+/queue type add kind=bfifo name=10M bfifo-limit=49000
+/queue type add kind=bfifo name=20M bfifo-limit=98000
+/queue type add kind=bfifo name=50M bfifo-limit=245000
+/queue type add kind=bfifo name=100M bfifo-limit=490000
+/queue type add kind=bfifo name=200M bfifo-limit=980000
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_0 dscp=0 new-packet-mark=dscp_0 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_56 dscp=56 new-packet-mark=dscp_56 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_48 dscp=48 new-packet-mark=dscp_48 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_46 dscp=46 new-packet-mark=dscp_46 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_40 dscp=40 new-packet-mark=dscp_40 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_38 dscp=38 new-packet-mark=dscp_38 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_36 dscp=36 new-packet-mark=dscp_36 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_34 dscp=34 new-packet-mark=dscp_34 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_32 dscp=32 new-packet-mark=dscp_32 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_30 dscp=30 new-packet-mark=dscp_30 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_28 dscp=28 new-packet-mark=dscp_28 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_26 dscp=26 new-packet-mark=dscp_26 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_24 dscp=24 new-packet-mark=dscp_24 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_22 dscp=22 new-packet-mark=dscp_22 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_20 dscp=20 new-packet-mark=dscp_20 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_18 dscp=18 new-packet-mark=dscp_18 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_16 dscp=16 new-packet-mark=dscp_16 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_14 dscp=14 new-packet-mark=dscp_14 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_12 dscp=12 new-packet-mark=dscp_12 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_10 dscp=10 new-packet-mark=dscp_10 passthrough=no
+/ip firewall mangle add action=mark-packet chain=postrouting comment=dscp_8 dscp=8 new-packet-mark=dscp_8 passthrough=no
+/queue tree add bucket-size=0.004 max-limit=98000000 name=ether1-out parent=ether1 queue=100M
+/queue tree add bucket-size=0.004 limit-at=6000000 max-limit=98000000 name="ether1-1-Network Control" parent=ether1-out priority=1 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS7" parent="ether1-1-Network Control" priority=8 queue=100M packet-mark=dscp_56
+/queue tree add bucket-size=0.004 limit-at=6000000 max-limit=98000000 name="ether1-2-Routing" parent=ether1-out priority=2 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS6" parent="ether1-2-Routing" priority=8 queue=100M packet-mark=dscp_48
+/queue tree add bucket-size=0.004 limit-at=30000000 max-limit=98000000 name="ether1-3-Critical" parent=ether1-out priority=3 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-2-CS5 Expedited Forwarding (VoIP)" parent="ether1-3-Critical" priority=2 queue=100M packet-mark=dscp_46
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS5" parent="ether1-3-Critical" priority=8 queue=100M packet-mark=dscp_40
+/queue tree add bucket-size=0.004 limit-at=30000000 max-limit=98000000 name="ether1-4-Flash Override" parent=ether1-out priority=4 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-2-CS4 AF43 (High)" parent="ether1-4-Flash Override" priority=2 queue=100M packet-mark=dscp_38
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-4-CS4 AF42 (Medium)" parent="ether1-4-Flash Override" priority=4 queue=100M packet-mark=dscp_36
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-6-CS4 AF41 (Low)" parent="ether1-4-Flash Override" priority=6 queue=100M packet-mark=dscp_34
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS4" parent="ether1-4-Flash Override" priority=8 queue=100M packet-mark=dscp_32
+/queue tree add bucket-size=0.004 limit-at=10000000 max-limit=98000000 name="ether1-5-Flash" parent=ether1-out priority=5 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-2-CS3 AF33 (High)" parent="ether1-5-Flash" priority=2 queue=100M packet-mark=dscp_30
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-4-CS3 AF32 (Medium)" parent="ether1-5-Flash" priority=4 queue=100M packet-mark=dscp_28
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-6-CS3 AF31 (Low)" parent="ether1-5-Flash" priority=6 queue=100M packet-mark=dscp_26
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS3" parent="ether1-5-Flash" priority=8 queue=100M packet-mark=dscp_24
+/queue tree add bucket-size=0.004 limit-at=10000000 max-limit=98000000 name="ether1-6-Immediate" parent=ether1-out priority=6 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-2-CS2 AF23 (High)" parent="ether1-6-Immediate" priority=2 queue=100M packet-mark=dscp_22
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-4-CS2 AF22 (Medium)" parent="ether1-6-Immediate" priority=4 queue=100M packet-mark=dscp_20
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-6-CS2 AF21 (Low)" parent="ether1-6-Immediate" priority=6 queue=100M packet-mark=dscp_18
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS2" parent="ether1-6-Immediate" priority=8 queue=100M packet-mark=dscp_16
+/queue tree add bucket-size=0.004 limit-at=4000000 max-limit=98000000 name="ether1-7-Priority" parent=ether1-out priority=7 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-2-CS1 AF13 (High)" parent="ether1-7-Priority" priority=2 queue=100M packet-mark=dscp_14
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-4-CS1 AF12 (Medium)" parent="ether1-7-Priority" priority=4 queue=100M packet-mark=dscp_12
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-6-CS1 AF11 (Low)" parent="ether1-7-Priority" priority=6 queue=100M packet-mark=dscp_10
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS1" parent="ether1-7-Priority" priority=8 queue=100M packet-mark=dscp_8
+/queue tree add bucket-size=0.004 limit-at=2000000 max-limit=98000000 name="ether1-8-Best Effort" parent=ether1-out priority=8 queue=100M
+/queue tree add bucket-size=0.004 max-limit=98000000 name="ether1-8-CS0" parent="ether1-8-Best Effort" priority=8 queue=100M packet-mark=dscp_0
+/queue tree add bucket-size=0.004 max-limit=98000000 name=no-mark parent="ether1-8-Best Effort" priority=8 queue=100M packet-mark=no-mark
